@@ -56,7 +56,7 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Write-Host "Installing $cmdName"
 	Add-AppxProvisionedPackage -Online -PackagePath $vclibPath -SkipLicense
 	Add-AppxProvisionedPackage -Online -PackagePath $uixamlPath -SkipLicense
-	Add-AppxProvisionedPackage -Online -PackagePath $wingetPath #-LicensePath $wingetLicPath -DependencyPackagePath $uixamlPath -DependencyPackagePath $vclibPath
+	Add-AppxProvisionedPackage -Online -PackagePath $wingetPath -SkipLicense #-LicensePath $wingetLicPath -DependencyPackagePath $uixamlPath -DependencyPackagePath $vclibPath
 	
 	# cleanup winget setup files
 	Remove-Item $vclibPath
