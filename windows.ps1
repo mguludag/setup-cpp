@@ -30,8 +30,8 @@ else
 
 $cmdName = "winget"
 $arch = ({x64}, {x86})[![Environment]::Is64BitOperatingSystem]
-$wingetUrl = "https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
-$wingetLicUrl = "https://github.com/microsoft/winget-cli/releases/latest/download/27abf0d1afe340e7a64fb696056b2672_License1.xml"
+$wingetUrl = "https://aka.ms/getwinget"
+# $wingetLicUrl = "https://github.com/microsoft/winget-cli/releases/latest/download/27abf0d1afe340e7a64fb696056b2672_License1.xml"
 $vclibUrl = "https://aka.ms/Microsoft.VCLibs.$arch.14.00.Desktop.appx"
 $uixamlUrl = "https://globalcdn.nuget.org/packages/microsoft.ui.xaml.2.7.1.nupkg"
 
@@ -41,7 +41,7 @@ $uixamlZip = "Microsoft.UI.Xaml.2.7.1.nupkg.zip"
 $vclibPath = "$pwd/Microsoft.VCLibs.14.00.Desktop.appx"
 $uixamlPath = "$pwd/Microsoft.UI.Xaml.2.7.1.nupkg\tools\AppX\$arch\Release\Microsoft.UI.Xaml.2.7.appx"
 $wingetPath = "$pwd/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
-$wingetLicPath = "$pwd/9c0fe2ce7f8e410eb4a8f417de74517e_License1.xml"
+# $wingetLicPath = "$pwd/9c0fe2ce7f8e410eb4a8f417de74517e_License1.xml"
 
 if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 {
@@ -49,19 +49,19 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Write-Host "Downloading $cmdName"
 	Import-Module BitsTransfer
 	Start-BitsTransfer -Source $wingetUrl -Destination $wingetPath
-	Start-BitsTransfer -Source $wingetLicUrl -Destination $wingetLicPath
+	# Start-BitsTransfer -Source $wingetLicUrl -Destination $wingetLicPath
 	Start-BitsTransfer -Source $vclibUrl -Destination $vclibPath
 	Start-BitsTransfer -Source $uixamlUrl -Destination $uixamlZip
 	Expand-Archive $uixamlZip
 	Write-Host "Installing $cmdName"
 	Add-AppxProvisionedPackage -Online -PackagePath $vclibPath -SkipLicense
 	Add-AppxProvisionedPackage -Online -PackagePath $uixamlPath -SkipLicense
-	Add-AppxProvisionedPackage -Online -PackagePath $wingetPath -LicensePath $wingetLicPath #-DependencyPackagePath $uixamlPath -DependencyPackagePath $vclibPath
+	Add-AppxProvisionedPackage -Online -PackagePath $wingetPath -SkipLicense #-LicensePath $wingetLicPath -DependencyPackagePath $uixamlPath -DependencyPackagePath $vclibPath
 	
 	# cleanup winget setup files
 	Remove-Item $vclibPath
 	Remove-Item $wingetPath
-	Remove-Item $wingetLicPath
+	# Remove-Item $wingetLicPath
 	Remove-Item $uixamlZip
 	Remove-Item $uixamlFolder -Recurse
 	
